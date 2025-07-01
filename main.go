@@ -10,11 +10,16 @@ import (
 )
 
 // User represents the user for this application
+// swagger:model
 type User struct {
 	// The name for this user
+	// required: true
+	// min lenght: 5
 	Name string `json:"name"`
 
 	// The birth year for this user
+	// min: 1900
+	// max: 2022
 	BirthYear int `json:"birth_year"`
 }
 
@@ -22,6 +27,21 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		// swagger:operation GET /users getUsers
+		//
+		// Insert documentation
+		//
+		// ---
+		// produces:
+		// - application/json
+		// responses:
+		//   '200':
+		//     description: user response
+		//     schema:
+		//       type: array
+		//       items:
+		//         "$ref": "#/definitions/User"
+
 		users := []User{
 			{"Mario", 1990},
 			{"Wario", 1980},
@@ -34,6 +54,22 @@ func main() {
 
 	router.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		// XXX: Imagine validation is implemented here
+
+		// swagger:operation POST /users postUser
+		//
+		// Include documentation
+		//
+		// ---
+		// produces:
+		// - application/json
+		// parameters:
+		//   - name: Body
+		//     in: body
+		//     schema:
+		//       "$ref": "#/definitions/User"
+		// responses:
+		//   '200':
+		//     description: user response
 
 		var user User
 
@@ -52,4 +88,4 @@ func main() {
 	}
 
 	log.Fatal(s.ListenAndServe())
-} 
+}
