@@ -14,29 +14,30 @@ import (
 type User struct {
 	// The name for this user
 	// required: true
-	// min lenght: 5
+	// minLength: 5
 	Name string `json:"name"`
 
 	// The birth year for this user
-	// min: 1900
-	// max: 2022
+	// minimum: 1900
+	// maximum: 2022
 	BirthYear int `json:"birth_year"`
 }
 
 func main() {
 	router := mux.NewRouter()
 
+	// Get Users
 	router.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		// swagger:operation GET /users getUsers
 		//
-		// Insert documentation
+		// Retrieves all users
 		//
 		// ---
 		// produces:
-		// - application/json
+		//   - application/json
 		// responses:
 		//   '200':
-		//     description: user response
+		//     description: A list of users
 		//     schema:
 		//       type: array
 		//       items:
@@ -52,24 +53,31 @@ func main() {
 		_, _ = w.Write(res)
 	}).Methods(http.MethodGet)
 
+	// Create User
 	router.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		// XXX: Imagine validation is implemented here
-
 		// swagger:operation POST /users postUser
 		//
-		// Include documentation
+		// Create a new user
 		//
 		// ---
 		// produces:
-		// - application/json
+		//   - application/json
 		// parameters:
-		//   - name: Body
+		//   - name: body
 		//     in: body
+		//     description: User object to create
+		//     required: true
 		//     schema:
 		//       "$ref": "#/definitions/User"
 		// responses:
 		//   '200':
-		//     description: user response
+		//     description: User successfully created
+		//     schema:
+		//       "$ref": "#/definitions/User"
+		//   '400':
+		//     description: Invalid input
+		//   '500':
+		//     description: Internal server error
 
 		var user User
 
